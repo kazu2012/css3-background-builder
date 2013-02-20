@@ -1,0 +1,55 @@
+*{margin: 0;padding: 0;}
+input, textarea, select {
+   -webkit-appearance: none;
+ }
+body{
+	background: #000;
+	color: #fff;
+	font-family: 'Roboto Condensed', sans-serif;
+}
+
+h1{
+	display: inline-block;
+	font-weight: normal;
+	-moz-transform:rotate(-270deg); 
+    -moz-transform-origin: bottom left;
+    -webkit-transform: rotate(-270deg);
+    -webkit-transform-origin: bottom left;
+    -o-transform: rotate(-270deg);
+    -o-transform-origin:  bottom left;
+}
+
+h1 sup{
+	font-size: 14px;
+}
+
+.main{
+	position: absolute;
+	top: 0;
+	left: 40px;
+	right: 300px;
+	bottom: 0;
+	padding: 20px;
+}
+
+.main .add{
+	width: 120px;
+	height: 120px;
+	display: inline-block;
+	background: #000;
+	border: 1px #fff dashed;
+	cursor: pointer;
+	color: #fff;
+}
+
+.code{
+	position: absolute;
+	width: 300px;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	background: #333;
+	padding: 20px;
+	box-shadow: 0 0 15px rgba(0,0,0,0.8) inset;
+}
+
