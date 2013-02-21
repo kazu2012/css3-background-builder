@@ -11,31 +11,51 @@
 <body>
     <h1>CSS3 background bulider<sup>beta</sup></h1>
     <div id="main" class="main">
-        <input type="button" value="add image" class="add">
-
-<!-- 
-        <input type="file" accept="image/*" multiple="multiple" />
-        <br/>
-        <input type="text" placeholder="image link here"/>
-        <br/>
-        <input type="text" placeholder="" />
-        <div id="show">show</div> -->
-
-<!--         <div class="preview">preview</div>
- -->
-
+        <div class="imgsArea">
+            <input type="button" value="add image" class="add">
+            <div class="imgs"></div>
+        </div>
+        <div class="previewArea">
+            <div class="preview"></div>
+        </div>
     </div>
 
-    <div id="code" class="code">
-        css code:
+    <div id="code" class="code"></div>
 
-        <pre>
-{
-    background:
-}
+    <div class="upArea">
+        <div class="title">upload images!</div>
+        <div class="m"><input type="file" accept="image/*" /></div>
+        <div class="imgs">
+            preview
+        </div>
 
+        <div class="title">options</div>
 
-        </pre>
+        <ul>
+            <li>
+                <span>repeat</span>
+                <label><input type="radio" name="repeat" value="no-repeat" checked >no-repeat</label>
+                <label><input type="radio" name="repeat" value="repeat" >repeat</label>
+                <label><input type="radio" name="repeat" value="repeat-x" >repeat-x</label>
+                <label><input type="radio" name="repeat" value="repeat-y" >repeat-y</label>
+            </li>
+
+            <li>
+                <span>backgroundSize</span>
+                <label><input type="radio" name="bs" checked value="auto">auto</label>
+                <label><input type="radio" name="bs" value="cover">cover</label>
+                <label><input type="radio" name="bs" value="cotain">cotain</label>
+                <label><input type="radio" name="bs" value="value">value</label>
+                <label><input type="radio" name="bs" value="percentage">percentage</label>
+            </li>
+
+            <li class="btns">
+                <input type="button" value="finish" class="finish">
+            </li>
+
+        </ul>
+
+        <div class="close">X</div>
     </div>
 
     <script src="script/init.js"></script>

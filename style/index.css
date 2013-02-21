@@ -1,7 +1,10 @@
 *{margin: 0;padding: 0;}
 input, textarea, select {
-   -webkit-appearance: none;
+   /*-webkit-appearance: none;*/
  }
+ul{
+	list-style: none;
+}
 body{
 	background: #000;
 	color: #fff;
@@ -11,6 +14,7 @@ body{
 h1{
 	display: inline-block;
 	font-weight: normal;
+	border-top: 2px solid #fff;
 	-moz-transform:rotate(-270deg); 
     -moz-transform-origin: bottom left;
     -webkit-transform: rotate(-270deg);
@@ -26,10 +30,10 @@ h1 sup{
 .main{
 	position: absolute;
 	top: 0;
-	left: 40px;
-	right: 300px;
+	left: 50px;
+	right: 340px;
 	bottom: 0;
-	padding: 20px;
+	-webkit-user-select:none;
 }
 
 .main .add{
@@ -42,6 +46,25 @@ h1 sup{
 	color: #fff;
 }
 
+.main .imgsArea{
+	position: absolute;
+	top: 20px;
+	bottom: 20px;
+	left: 10px;
+	width: 122px;
+	overflow-y:auto; 
+	overflow-x:hidden; 
+}
+
+.main .previewArea{
+	position: absolute;
+	top: 20px;
+	bottom: 20px;
+	left: 150px;
+	right: 10px;
+	border: 1px solid #f3f3f3;
+}
+
 .code{
 	position: absolute;
 	width: 300px;
@@ -52,4 +75,97 @@ h1 sup{
 	padding: 20px;
 	box-shadow: 0 0 15px rgba(0,0,0,0.8) inset;
 }
+
+.upArea{
+	position: absolute;
+	background: #fff;
+
+	width: 360px;
+	height: 480px;
+	top: 50%;
+	left: 50%;
+	margin-top: -240px;
+	margin-left: -180px;
+	color: #666;
+
+	padding: 5px;
+	-webkit-transition:-webkit-transform 1s;
+	-webkit-transform:scale(0);
+
+}
+
+
+.upArea.ac{
+	-webkit-transform:scale(1);
+}
+
+
+.upArea *:not(input){
+	-webkit-user-select:none;
+}
+
+.upArea .title{
+	text-align: center;
+	line-height: 30px;
+	font-size: 18px;
+	color: rgb(183,104,71);
+	margin: 10px 0 5px;
+}
+
+.upArea .imgs{
+	width: 120px;
+	height: 120px;
+	line-height: 120px;
+	text-align: center;
+	border:1px solid #ddd; 
+	color: #ddd;
+	margin: 5px auto;
+
+}
+
+.upArea li{
+	line-height: 32px;
+	margin: 10px 0 15px;
+}
+
+.upArea li span{
+	display: block;
+	border-bottom: 1px solid #999;
+	text-align: left;
+}
+
+.upArea li label{
+	display: inline-block;
+	padding: 0 10px 0 0;
+}
+
+.upArea .close{
+	position: absolute;
+	width: 30px;
+	height: 30px;
+	right: -15px;
+	top: -15px;
+	border-radius: 15px;
+	background: #fff;
+	line-height: 30px;
+	text-align: center;
+
+	border: 1px solid RGB(196,53,53);
+	-webkit-user-select:none;
+
+	color: RGB(196,53,53);
+
+	cursor: pointer;
+}
+
+.upArea .btns{
+	text-align: center;
+}
+
+.upArea .finish{
+	width: 120px;
+	height: 32px;
+}
+
+
 
