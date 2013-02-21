@@ -1,2 +1,4 @@
 #web storme temp files
 */.idea/
+
+*.DS_Store
