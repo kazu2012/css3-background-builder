@@ -12,7 +12,7 @@
     <h1>CSS3 background bulider<sup>beta</sup></h1>
     <div id="main" class="main">
         <div class="imgsArea">
-            <input type="button" value="add image" class="add">
+            <input type="button" value="add image" class="add" id="add">
             <div class="imgs"></div>
         </div>
         <div class="previewArea">
@@ -22,10 +22,10 @@
 
     <div id="code" class="code"></div>
 
-    <div class="upArea">
+    <div class="upArea" id="upArea">
         <div class="title">upload images!</div>
-        <div class="m"><input type="file" accept="image/*" /></div>
-        <div class="imgs">
+        <div ><input id="file" type="file" accept="image/*" multiple="multiple"/></div>
+        <div class="uploadPreview" id="uploadPreview">
             preview
         </div>
 
@@ -50,7 +50,7 @@
             </li>
 
             <li class="btns">
-                <input type="button" value="finish" class="finish">
+                <input type="button" value="finish" class="finish" id="finish">
             </li>
 
         </ul>
@@ -58,7 +58,6 @@
         <div class="close">X</div>
     </div>
 
-    <script src="script/init.js"></script>
-
+<script type="text/javascript" src="./script/library/sea.js" data-main = "./script/init"></script>
 </body>
 </html>
