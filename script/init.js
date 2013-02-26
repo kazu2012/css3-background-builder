@@ -59,7 +59,6 @@ define(function(require,exports){
           alert('please upload image first!');
           return false;
         }else{
-          if(!!Src){OURL.revokeObjectURL(Src);}
           $('#file').value = '';
           $('#uploadPreview').innerHTML = 'preview';
           $('#uploadPreview').style['backgroundImage'] = 'none';
@@ -82,6 +81,15 @@ define(function(require,exports){
           $('#uploadPreview').style['backgroundImage'] = 'url(' + Src + ')';
           $('#uploadPreview').innerHTML = '';
         }
+    };
+
+    exports.appendImages = function(){
+      var Imgs = doc.querySelector('.imgsArea .imgs');
+      var img = doc.createElement('div');
+      img.innerHTML = '<div class="close">X</div>'
+      img.className = 'img';
+      img.style['backgroundImage'] = 'url(' + Src + ')';
+      Imgs.appendChild(img);
     };
 
     

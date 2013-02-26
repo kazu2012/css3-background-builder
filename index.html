@@ -13,10 +13,18 @@
     <div id="main" class="main">
         <div class="imgsArea">
             <input type="button" value="add image" class="add" id="add">
-            <div class="imgs"></div>
+            <div class="imgs">
+
+
+            </div>
         </div>
-        <div class="previewArea">
-            <div class="preview"></div>
+        <div class="previewArea" id="previewArea">
+            <div class="preview" id="preview"></div>
+
+            <div class="previewOption" id="previewOption">
+<!--                 <input type="text" placeholder="width" />px;
+                <input type="text" placeholder="height" />px;
+ -->            </div>
         </div>
     </div>
 
@@ -24,7 +32,9 @@
 
     <div class="upArea" id="upArea">
         <div class="title">upload images!</div>
-        <div ><input id="file" type="file" accept="image/*" multiple="multiple"/></div>
+        
+        <!-- multiple="multiple" -->
+        <div ><input id="file" type="file" accept="image/*" /></div>
         <div class="uploadPreview" id="uploadPreview">
             preview
         </div>
