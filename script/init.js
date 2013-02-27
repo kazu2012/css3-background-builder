@@ -31,8 +31,6 @@ define(function(require,exports){
 
     var OURL = window.URL || window.webkitURL;
 
-    var Src; //生成的预览src
-
     var Files = [];
     var tmpFiles = [];
 
@@ -66,31 +64,64 @@ define(function(require,exports){
           exports.appendImages();
         }
       });
-
     };
 
     exports.addFiles = function(files){
-        if(Src){OURL.revokeObjectURL(Src);}
-        tmpFiles = files;
-        if(tmpFiles.length == 0 ){
+        tmpFiles = [];
+
+        if(files.length == 0 ){
             $('#uploadPreview').innerHTML = 'preview';
             $('#uploadPreview').style['backgroundImage'] = 'none';
         }else{
+            for(var n=0;n<files.length;n++){
 
-          Src = OURL.createObjectURL(tmpFiles[0]);
-          $('#uploadPreview').style['backgroundImage'] = 'url(' + Src + ')';
-          $('#uploadPreview').innerHTML = '';
+                var fileObj = {
+                    src : OURL.createObjectURL(files[n]),
+                    file : files[n],
+                    id : Date.now()
+                };
+                tmpFiles.push(fileObj);
+            }
+
+              $('#uploadPreview').style['backgroundImage'] = 'url(' + tmpFiles[0].src + ')';
+              $('#uploadPreview').innerHTML = '';
         }
     };
 
     exports.appendImages = function(){
-      var Imgs = doc.querySelector('.imgsArea .imgs');
-      var img = doc.createElement('div');
-      img.innerHTML = '<div class="close">X</div>'
-      img.className = 'img';
-      img.style['backgroundImage'] = 'url(' + Src + ')';
-      Imgs.appendChild(img);
+        if(tmpFiles.length == 0 ){return false;}
+        Files = Files.concat(tmpFiles);
+        tmpFiles = [];
+        exports.showImages();
+        exports.previewImages();
     };
 
-    
+    exports.showImages = function(){
+        if(Files.length == 0){return false;}
+        var Imgs = doc.querySelector('.imgsArea .imgs');
+        Imgs.innerHTML = '';
+        for(var n=0;n<Files.length;n++){
+            var img = doc.createElement('div');
+            img.innerHTML = '<div class="close">x</div>';
+            img.className = 'img';
+            img.style['backgroundImage'] = 'url(' +Files[n].src+ ')';
+            Imgs.appendChild(img);
+        }
+    };
+
+    exports.previewImages = function(){
+        if(Files.length == 0){return false;}
+        var _preview = doc.querySelector('#preview');
+        _preview.style['backgroundImage'] = '';
+
+        for(var n=0;n<Files.length;n++){
+            if(n==0){
+                _preview.style['backgroundImage'] = 'url(' +Files[n].src +')';
+            }else{
+                console.log('hello?')
+                _preview.style['backgroundImage'] += ',url(' +Files[n].src +')';
+            }
+        }
+    };
+
 });
