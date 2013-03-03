@@ -14,17 +14,9 @@
         <div class="imgsArea">
             <input type="button" value="add image" class="add" id="add">
             <div class="imgs">
-
-
             </div>
         </div>
-        <div class="previewArea" id="previewArea">
-            <div class="preview" id="preview"></div>
-
-            <div class="previewOption" id="previewOption">
-<!--                 <input type="text" placeholder="width" />px;
-                <input type="text" placeholder="height" />px;
- -->            </div>
+        <div class="previewArea" id="preview">
         </div>
     </div>
 
@@ -40,6 +32,7 @@
 
         <div class="title">options</div>
 
+        <form>
         <ul>
             <li>
                 <span>repeat</span>
@@ -53,16 +46,25 @@
                 <span>backgroundSize</span>
                 <label><input type="radio" name="bs" checked value="auto">auto</label>
                 <label><input type="radio" name="bs" value="cover">cover</label>
-                <label><input type="radio" name="bs" value="cotain">cotain</label>
+                <label><input type="radio" name="bs" value="contain">contain</label>
                 <label><input type="radio" name="bs" value="value">value</label>
                 <label><input type="radio" name="bs" value="percentage" >percentage</label>
+                <div class="valueSelected" style="display:none;" ><input type="text" placeholder="x" value=100 name="bs_value_x"/> px, <input type="text" placeholder="y" name="bs_value_y" value=100 />px</div>
+                <div class="percentageSelected" style="display:none;"><input type="text" placeholder="x" value=100 name="bs_percentage_x"/> %, <input type="text" placeholder="y" name="bs_percentage_y" value=100 />%</div>
+            </li>
+
+            <li>
+                <span>backgroundPosition</span>
+                <label><input type="radio" name="bp_x" /></label>
+
             </li>
 
             <li class="btns">
                 <input type="button" value="finish" class="finish" id="finish">
             </li>
-
         </ul>
+        </form>
+
 
         <div class="close">X</div>
     </div>
