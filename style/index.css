@@ -197,4 +197,7 @@ h1 sup{
 }
 
 
-
+textarea{
+	width: 100%;
+	min-height: 300px;
+}

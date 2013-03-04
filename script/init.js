@@ -27,8 +27,6 @@ define(function(require,exports){
       }
     };
 
-    var backgroundSizeInUse;
-
     var OURL = window.URL || window.webkitURL;
 
     var Files = [];
@@ -77,66 +75,16 @@ define(function(require,exports){
       }
 
       var _bss = doc.querySelectorAll('input[name=bs]');
-
       for(var n=0;n<_bss.length;n++){
         var _bs = _bss[n];
         _bs.addEventListener('change',function(){
           var _value = this.value;
-          var _valueFix;
-
-          backgroundSizeInUse = this.value;
-          doc.querySelector('.valueSelected').style.display = 'none';
-          doc.querySelector('.percentageSelected').style.display = 'none';
-          switch(_value){
-            case 'value':
-                doc.querySelector('.valueSelected').style.display = '';
-                _valuefix = ~~doc.querySelector('input[name=bs_value_x]').value + 'px ' + ~~doc.querySelector('input[name=bs_value_y]').value + 'px';
-            break;
-            case 'percentage':
-                doc.querySelector('.percentageSelected').style.display = '';
-                _valuefix = ~~doc.querySelector('input[name=bs_percentage_x]').value + '% ' + ~~doc.querySelector('input[name=bs_percentage_y]').value + '%';
-            break;
-            default: 
-              _valuefix = _value;
-            break;
-          }
           tmpFiles.forEach(function(_file,index){
-            _file.backgroundSize = _valuefix;
+            _file.backgroundSize = _value;
           });
         },false);
       }
 
-      BE($('input[name=bs_value_x]'),'change',function(){
-        if(backgroundSizeInUse && backgroundSizeInUse == 'value'){
-          tmpFiles.forEach(function(_file,index){
-            _file.backgroundSize = ~~doc.querySelector('input[name=bs_value_x]').value + 'px ' + ~~doc.querySelector('input[name=bs_value_y]').value + 'px';
-          });
-        }
-      });
-
-      BE($('input[name=bs_value_y]'),'change',function(){
-        if(backgroundSizeInUse && backgroundSizeInUse == 'value'){
-          tmpFiles.forEach(function(_file,index){
-            _file.backgroundSize = ~~doc.querySelector('input[name=bs_value_x]').value + 'px ' + ~~doc.querySelector('input[name=bs_value_y]').value + 'px';
-          });
-        }
-      });
-
-      BE($('input[name=bs_percentage_x]'),'change',function(){
-        if(backgroundSizeInUse && backgroundSizeInUse == 'percentage'){
-          tmpFiles.forEach(function(_file,index){
-            _file.backgroundSize = ~~doc.querySelector('input[name=bs_percentage_x]').value + '% ' + ~~doc.querySelector('input[name=bs_percentage_y]').value + '%';
-          });
-        }
-      });
-
-      BE($('input[name=bs_percentage_y]'),'change',function(){
-        if(backgroundSizeInUse && backgroundSizeInUse == 'percentage'){
-          tmpFiles.forEach(function(_file,index){
-            _file.backgroundSize = ~~doc.querySelector('input[name=bs_percentage_x]').value + '% ' + ~~doc.querySelector('input[name=bs_percentage_y]').value + '%';
-          });
-        }
-      });
     };
 
     exports.addFiles = function(files){
@@ -152,7 +100,7 @@ define(function(require,exports){
                     file : files[n],
                     id : Date.now(),
                     repeat : exports._getRadioValue('repeat'),
-                    backgroundSize : exports._getBsBaValue('bs')
+                    backgroundSize : exports._getRadioValue('bs')
                 };
                 tmpFiles.push(fileObj);
             }
@@ -175,24 +123,6 @@ define(function(require,exports){
         return value;
     };
 
-    exports._getBsBaValue = function(){
-      var _value = exports._getRadioValue('bs');
-      var _valueFix;
-      
-      switch(_value){
-        case 'value':
-            _valuefix = ~~doc.querySelector('input[name=bs_value_x]').value + 'px ' + ~~doc.querySelector('input[name=bs_value_y]').value + 'px';
-        break;
-        case 'percentage':
-            _valuefix = ~~doc.querySelector('input[name=bs_percentage_x]').value + '% ' + ~~doc.querySelector('input[name=bs_percentage_y]').value + '%';
-        break;
-        default: 
-          _valuefix = _value;
-        break;
-      }
-      return _valuefix;
-    };
-
     exports.appendImages = function(){
         if(tmpFiles.length == 0 ){return false;}
         Files = Files.concat(tmpFiles);
@@ -211,6 +141,8 @@ define(function(require,exports){
             img.innerHTML = '<div class="close">x</div>';
             img.className = 'img';
             img.style['backgroundImage'] = 'url(' +Files[n].src+ ')';
+            img.se
+
             Imgs.appendChild(img);
         }
     };
@@ -235,9 +167,25 @@ define(function(require,exports){
     };
 
     exports.genterCssCode = function(){
+
+      console.log(Files);
+
       var cssCode = '';
-      
-      console.log($('#preview').style.cssText);
+      cssCode += '{\n';
+      var _bs = '';
+      var _br = '';
+      var _bi = '';
+      Files.forEach(function(_file,index){
+        _bs += index ? ','+_file.backgroundSize : _file.backgroundSize;
+        _br += index ? ',' + _file.repeat : _file.repeat;
+        _bi += index ? ',' + _file.file.name : _file.file.name;
+      });
+      cssCode += 'background-image : ' + _bi + ';\n';
+      cssCode += 'background-repeat : ' + _br + ';\n';
+      cssCode += 'background-size : ' +  _bs + ';\n';
+      cssCode += '}'
+        
+      $('#code').value = cssCode;
 
     };
 
