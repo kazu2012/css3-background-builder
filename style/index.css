@@ -88,7 +88,7 @@ h1 sup{
 }
 
 
-.main .previewArea{
+.main .preview{
 	position: absolute;
 	top: 20px;
 	bottom: 20px;
@@ -98,17 +98,13 @@ h1 sup{
 	overflow: hidden;
 }
 
-.previewArea .preview{
-	width: 500px;
-	height: 500px;
+.preview .preview_size{
 	position: absolute;
-	top: 50%;
-	left: 50%;
-	margin: -250px 0 0 -250px;
-}
-
-.previewOption{
-
+	bottom: 0;
+	right: 0;
+	background: rgba(255,255,255,0.5);
+	color: #333;
+	padding: 0 5px;
 }
 
 .code{

@@ -85,6 +85,25 @@ define(function(require,exports){
         },false);
       }
 
+
+      var resizeTimer = null;
+      window.addEventListener('resize',function(e){
+        if(resizeTimer){
+          clearTimeout(resizeTimer);
+          resizeTimer = null;
+        }
+        var _preview = doc.getElementById('preview');
+        var _preview_size = doc.getElementById('preview_size');
+        _preview_size.style.display = '';
+        _preview_size.innerHTML = _preview.clientWidth + 'px , '+ _preview.clientHeight + 'px';
+        resizeTimer = setTimeout(function(){
+          _preview_size.style.display = 'none';
+        },3000);
+
+      });
+
+
+
     };
 
     exports.addFiles = function(files){
