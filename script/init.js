@@ -138,12 +138,15 @@ define(function(require,exports){
         Imgs.innerHTML = '';
         for(var n=0;n<Files.length;n++){
             var img = doc.createElement('div');
-            img.innerHTML = '<div class="close">x</div>';
             img.className = 'img';
             img.style['backgroundImage'] = 'url(' +Files[n].src+ ')';
-            img.se
+            img.setAttribute('_id',Files[n].id);
+            img.addEventListener('click',function(){
+              this.classList.toggle('ac');
+            });
 
             Imgs.appendChild(img);
+
         }
     };
 
