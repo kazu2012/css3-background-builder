@@ -11,6 +11,7 @@ seajs.use('init.js',function(init){
 });
 
 define(function(require,exports){
+    var iTouch = require('touch'); 
     var doc = document;
 
     var $ = function(query){
@@ -99,11 +100,21 @@ define(function(require,exports){
         resizeTimer = setTimeout(function(){
           _preview_size.style.display = 'none';
         },3000);
-
       });
 
+      iTouch({
+          element:doc.getElementById('preview'),
+          start:function (e, x, y) {
+            exports._start(e,x,y);
 
-
+          },
+          move:function (e, dir, disX, disY, x, y) {
+             exports._move(e,dir,disX,disY,x,y);
+          },
+          end:function () {
+            exports._end();
+          }
+      });
     };
 
     exports.addFiles = function(files){
@@ -118,6 +129,8 @@ define(function(require,exports){
                     src : OURL.createObjectURL(files[n]),
                     file : files[n],
                     id : Date.now(),
+                    x : 0,
+                    y : 0,
                     repeat : exports._getRadioValue('repeat'),
                     backgroundSize : exports._getRadioValue('bs')
                 };
@@ -146,9 +159,7 @@ define(function(require,exports){
         if(tmpFiles.length == 0 ){return false;}
         Files = Files.concat(tmpFiles);
         tmpFiles = [];
-        exports.showImages();
-        exports.previewImages();
-        exports.genterCssCode();
+        exports.render();
     };
 
     exports.showImages = function(){
@@ -163,7 +174,6 @@ define(function(require,exports){
             img.addEventListener('click',function(){
               this.classList.toggle('ac');
             });
-
             Imgs.appendChild(img);
 
         }
@@ -179,19 +189,20 @@ define(function(require,exports){
                 _preview.style['backgroundImage'] = 'url(' +Files[n].src +')';
                 _preview.style['backgroundRepeat'] = Files[n].repeat;
                 _preview.style['backgroundSize'] = Files[n].backgroundSize;
+                _preview.style['backgroundPositionX'] = Files[n].x + 'px';
+                _preview.style['backgroundPositionY'] = Files[n].y + 'px';
+
             }else{
                 _preview.style['backgroundImage'] += ',url(' +Files[n].src +')';
                 _preview.style['backgroundRepeat'] += ',' +  Files[n].repeat;
                 _preview.style['backgroundSize'] += ',' + Files[n].backgroundSize;
-
+                _preview.style['backgroundPositionX'] += ',' +  Files[n].x + 'px';
+                _preview.style['backgroundPositionY'] += ',' + Files[n].y + 'px';
             }
         }
     };
 
     exports.genterCssCode = function(){
-
-      console.log(Files);
-
       var cssCode = '';
       cssCode += '{\n';
       var _bs = '';
@@ -200,15 +211,39 @@ define(function(require,exports){
       Files.forEach(function(_file,index){
         _bs += index ? ','+_file.backgroundSize : _file.backgroundSize;
         _br += index ? ',' + _file.repeat : _file.repeat;
-        _bi += index ? ',' + _file.file.name : _file.file.name;
+        _bi += index ? ',' + 'url(' +  _file.file.name + ')' :  'url(' + _file.file.name + ')'; 
       });
       cssCode += 'background-image : ' + _bi + ';\n';
       cssCode += 'background-repeat : ' + _br + ';\n';
       cssCode += 'background-size : ' +  _bs + ';\n';
       cssCode += '}'
-        
       $('#code').value = cssCode;
+    };
 
+    var startX,startY;
+    var fileStartX,fileStartY;
+    exports._start = function(e,x,y){
+      startX = x;
+      startY = y;
+      fileStartX = Files[0].x;
+      fileStartY = Files[0].y;
+    };
+
+    exports._move = function (e, dir, disX, disY, x, y) {
+      if(startX == undefined || startY == undefined){return false;}
+      Files[0].x =fileStartX +  x - startX;
+      Files[0].y =fileStartY + y - startY;
+      exports.render();
+    };          
+
+    exports._end = function () {
+      fileStartX = fileStartY = startX = startY = undefined;
+    };
+
+    exports.render = function(){
+        exports.showImages();
+        exports.previewImages();
+        exports.genterCssCode();
     };
 
 
