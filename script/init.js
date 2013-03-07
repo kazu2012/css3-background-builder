@@ -131,9 +131,12 @@ define(function(require,exports){
       for(var n=0;n<Files.length;n++){
         var _file = Files[n];
         if(_file.id == id){
-          _file.selected = !_file.selected;
+          _file.selected = true;
+        }else{
+          _file.selected = false;
         }
       }
+
     };
 
 
@@ -149,7 +152,7 @@ define(function(require,exports){
                     selected : false,
                     src : OURL.createObjectURL(files[n]),
                     file : files[n],
-                    id : ~~Date.now(),
+                    id : ~~Date.now() + ~~(Math.random() * 1000),
                     x : 0,
                     y : 0,
                     repeat : exports._getRadioValue('repeat'),
