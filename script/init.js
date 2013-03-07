@@ -106,7 +106,6 @@ define(function(require,exports){
           element:doc.getElementById('preview'),
           start:function (e, x, y) {
             exports._start(e,x,y);
-
           },
           move:function (e, dir, disX, disY, x, y) {
              exports._move(e,dir,disX,disY,x,y);
@@ -115,7 +114,28 @@ define(function(require,exports){
             exports._end();
           }
       });
+
+      var Imgs = doc.getElementById('imgs');
+      Imgs.addEventListener('click',function(e){
+        var _target = e.target;
+        if(_target.classList.contains('img')){
+          var _id = ~~_target.getAttribute('_id');
+          exports.toggleSelect(_id);
+          exports.render();
+        }
+      });
     };
+
+    exports.toggleSelect = function(id){
+      if(!id){return;}
+      for(var n=0;n<Files.length;n++){
+        var _file = Files[n];
+        if(_file.id == id){
+          _file.selected = !_file.selected;
+        }
+      }
+    };
+
 
     exports.addFiles = function(files){
         tmpFiles = [];
@@ -126,9 +146,10 @@ define(function(require,exports){
         }else{
             for(var n=0;n<files.length;n++){
                 var fileObj = {
+                    selected : false,
                     src : OURL.createObjectURL(files[n]),
                     file : files[n],
-                    id : Date.now(),
+                    id : ~~Date.now(),
                     x : 0,
                     y : 0,
                     repeat : exports._getRadioValue('repeat'),
@@ -164,18 +185,18 @@ define(function(require,exports){
 
     exports.showImages = function(){
         if(Files.length == 0){return false;}
-        var Imgs = doc.querySelector('.imgsArea .imgs');
+        var Imgs = doc.getElementById('imgs');
         Imgs.innerHTML = '';
         for(var n=0;n<Files.length;n++){
+            var _file = Files[n];
             var img = doc.createElement('div');
             img.className = 'img';
-            img.style['backgroundImage'] = 'url(' +Files[n].src+ ')';
-            img.setAttribute('_id',Files[n].id);
-            img.addEventListener('click',function(){
-              this.classList.toggle('ac');
-            });
+            img.style['backgroundImage'] = 'url(' +_file.src+ ')';
+            img.setAttribute('_id',_file.id);
+            if(_file.selected){
+              img.classList.add('ac');
+            }
             Imgs.appendChild(img);
-
         }
     };
 
@@ -208,36 +229,51 @@ define(function(require,exports){
       var _bs = '';
       var _br = '';
       var _bi = '';
+      var _bp = '';
       Files.forEach(function(_file,index){
         _bs += index ? ','+_file.backgroundSize : _file.backgroundSize;
         _br += index ? ',' + _file.repeat : _file.repeat;
         _bi += index ? ',' + 'url(' +  _file.file.name + ')' :  'url(' + _file.file.name + ')'; 
+        _bp += index ? ',' + _file.x + 'px ' + _file.y + 'px' : _file.x + 'px ' + _file.y + 'px';
       });
       cssCode += 'background-image : ' + _bi + ';\n';
       cssCode += 'background-repeat : ' + _br + ';\n';
       cssCode += 'background-size : ' +  _bs + ';\n';
+      cssCode += 'background-position : ' + _bp + ';\n';
       cssCode += '}'
       $('#code').value = cssCode;
     };
 
     var startX,startY;
-    var fileStartX,fileStartY;
+    var copyFiles = [];
     exports._start = function(e,x,y){
       startX = x;
       startY = y;
-      fileStartX = Files[0].x;
-      fileStartY = Files[0].y;
+      copyFiles = [];
+
+      Files.forEach(function(file,index){
+        var _file = {};
+        for(var name in file){
+          _file[name] = file[name];
+        }
+        copyFiles.push(_file);
+      });
     };
 
     exports._move = function (e, dir, disX, disY, x, y) {
       if(startX == undefined || startY == undefined){return false;}
-      Files[0].x =fileStartX +  x - startX;
-      Files[0].y =fileStartY + y - startY;
+      Files.forEach(function(file,index){
+        if(file.selected){
+          file.x = copyFiles[index].x + x -startX;
+          file.y = copyFiles[index].y + y - startY;
+        }
+      });
       exports.render();
     };          
 
     exports._end = function () {
-      fileStartX = fileStartY = startX = startY = undefined;
+      startX = startY = undefined;
+      copyFiles = [];
     };
 
     exports.render = function(){
