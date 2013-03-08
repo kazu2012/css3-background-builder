@@ -180,6 +180,7 @@ define(function(require,exports){
         if(tmpFiles.length == 0 ){return false;}
         Files = tmpFiles.concat(Files);
         tmpFiles = [];
+        exports.toggleSelect(Files[0].id);
         exports.render();
     };
 
