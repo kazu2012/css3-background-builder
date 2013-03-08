@@ -130,6 +130,18 @@ define(function(require,exports){
           exports.render();
         }
 
+        if(_target.classList.contains('up')){
+          var _id = ~~ _target.parentNode.getAttribute('_id');
+          exports.changeOrder(_id,true);
+          exports.render();
+        }
+
+        if(_target.classList.contains('down')){
+          var _id = ~~ _target.parentNode.getAttribute('_id');
+          exports.changeOrder(_id,false);
+          exports.render();
+        }
+
       });
 
 
@@ -200,6 +212,27 @@ define(function(require,exports){
         }
     };
 
+    exports.changeOrder = function(id,isup){
+      var index;
+      for(var n=0;n<Files.length;n++){
+        var _file = Files[n];
+        if(_file.id == id){
+          index = n;
+          break;
+        }
+      }
+
+      if(index !== undefined){
+        var _tmp =  Files.splice(index,1);
+        if(isup){
+          Files = Files.slice(0,index-1).concat(_tmp,Files.slice(index-1));
+        }else{
+          Files = Files.slice(0,index+1).concat(_tmp,Files.slice(index+1));
+        }
+      }
+
+    };
+
     exports._getRadioValue = function(name){
         var _inputs = doc.querySelectorAll('input[name='+name+']');
         var value = null;
@@ -250,14 +283,14 @@ define(function(require,exports){
             }
             var _html = '';
             if(n == 0 ){
-              _html = '<span class="down">&nbsp;</span>';
+              _html = '<span class="down" title="down">&nbsp;</span>';
             }else if(n == Files.length -1){
-              _html = '<span class="up">&nbsp;</span>';
+              _html = '<span class="up" title="up">&nbsp;</span>';
             }else{
-              _html = '<span class="up">&nbsp;</span><span class="down">&nbsp;</span>';
+              _html = '<span class="up" title="up">&nbsp;</span><span class="down" title="down">&nbsp;</span>';
             }
 
-            img.innerHTML = _html + '<em class="del">&nbsp;</em>';
+            img.innerHTML = _html + '<em class="del" title="delete">&nbsp;</em>';
             Imgs.appendChild(img);
         }
     };
