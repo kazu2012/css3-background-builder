@@ -64,8 +64,6 @@ define(function(require,exports){
         }
       });
 
-
-
       var _repeats = doc.querySelectorAll('input[name=repeat]');
       for(var n=0;n<_repeats.length;n++){
         var _repeat = _repeats[n];
@@ -125,12 +123,18 @@ define(function(require,exports){
           exports.toggleSelect(_id);
           exports.render();
         }
+
+        if(_target.classList.contains('del')){
+          var _id = ~~ _target.parentNode.getAttribute('_id');
+          exports.delFileById(_id);
+          exports.render();
+        }
+
       });
 
 
       window.onkeydown = function(e){
         e.preventDefault();
-
         var _x=0,_y=0;
         var fact = e.shiftKey ? 10 : 1;
         switch(e.keyCode){
@@ -210,6 +214,20 @@ define(function(require,exports){
         return value;
     };
 
+    exports.delFileById = function(id){
+      var index;
+      for(var n=0;n<Files.length;n++){
+        if(Files[n].id === id){
+          index = n;
+          break;
+        }
+      }
+
+      if(index !== undefined){
+        Files.splice(index,1);
+      }
+    };
+
     exports.appendImages = function(){
         if(tmpFiles.length == 0 ){return false;}
         Files = tmpFiles.concat(Files);
@@ -219,7 +237,6 @@ define(function(require,exports){
     };
 
     exports.showImages = function(){
-        if(Files.length == 0){return false;}
         var Imgs = doc.getElementById('imgs');
         Imgs.innerHTML = '';
         for(var n=0;n<Files.length;n++){
@@ -231,15 +248,23 @@ define(function(require,exports){
             if(_file.selected){
               img.classList.add('ac');
             }
+            var _html = '';
+            if(n == 0 ){
+              _html = '<span class="down">&nbsp;</span>';
+            }else if(n == Files.length -1){
+              _html = '<span class="up">&nbsp;</span>';
+            }else{
+              _html = '<span class="up">&nbsp;</span><span class="down">&nbsp;</span>';
+            }
+
+            img.innerHTML = _html + '<em class="del">&nbsp;</em>';
             Imgs.appendChild(img);
         }
     };
 
     exports.previewImages = function(){
-        if(Files.length == 0){return false;}
         var _preview = doc.querySelector('#preview');
         _preview.style['backgroundImage'] = '';
-
         for(var n=0;n<Files.length;n++){
             if(n==0){
                 _preview.style['backgroundImage'] = 'url(' +Files[n].src +')';
@@ -268,7 +293,7 @@ define(function(require,exports){
       Files.forEach(function(_file,index){
         _bs += index ? ','+_file.backgroundSize : _file.backgroundSize;
         _br += index ? ',' + _file.repeat : _file.repeat;
-        _bi += index ? ',' + 'url(' +  _file.file.name + ')' :  'url(' + _file.file.name + ')'; 
+        _bi += index ? ',' + 'url("' +  _file.file.name + '")' :  'url("' + _file.file.name + '")'; 
         _bp += index ? ',' + _file.x + 'px ' + _file.y + 'px' : _file.x + 'px ' + _file.y + 'px';
       });
       cssCode += 'background-image : ' + _bi + ';\n';
@@ -276,6 +301,9 @@ define(function(require,exports){
       cssCode += 'background-size : ' +  _bs + ';\n';
       cssCode += 'background-position : ' + _bp + ';\n';
       cssCode += '}'
+
+      if(Files.length == 0){cssCode = '';}
+
       $('#code').value = cssCode;
     };
 
