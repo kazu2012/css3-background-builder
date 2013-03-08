@@ -136,13 +136,10 @@ define(function(require,exports){
           _file.selected = false;
         }
       }
-
     };
-
 
     exports.addFiles = function(files){
         tmpFiles = [];
-
         if(files.length == 0 ){
             $('#uploadPreview').innerHTML = 'preview';
             $('#uploadPreview').style['backgroundImage'] = 'none';
@@ -181,7 +178,7 @@ define(function(require,exports){
 
     exports.appendImages = function(){
         if(tmpFiles.length == 0 ){return false;}
-        Files = Files.concat(tmpFiles);
+        Files = tmpFiles.concat(Files);
         tmpFiles = [];
         exports.render();
     };
