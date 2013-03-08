@@ -64,6 +64,8 @@ define(function(require,exports){
         }
       });
 
+
+
       var _repeats = doc.querySelectorAll('input[name=repeat]');
       for(var n=0;n<_repeats.length;n++){
         var _repeat = _repeats[n];
@@ -124,6 +126,38 @@ define(function(require,exports){
           exports.render();
         }
       });
+
+
+      window.onkeydown = function(e){
+        e.preventDefault();
+
+        var _x=0,_y=0;
+        var fact = e.shiftKey ? 10 : 1;
+        switch(e.keyCode){
+
+          case 38 : 
+           _y=-1;
+           break;
+          case 40 : 
+           _y=1;
+           break;
+          case 37 : 
+           _x=-1;
+           break;
+          case 39 : 
+           _x=1;
+           break;
+        }
+        Files.forEach(function(file,index){
+          if(file.selected){
+            file.x += _x*fact;
+            file.y += _y*fact;
+          }
+        });
+        exports.render();
+      };
+
+
     };
 
     exports.toggleSelect = function(id){
